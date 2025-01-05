@@ -10,7 +10,6 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-strongpassword}
       ### Extensions ###
-      INSTALL_PLRUST: ${INSTALL_PLRUST:-false}
       INSTALL_CRON: ${INSTALL_CRON:-false}
       INSTALL_HTTP: ${INSTALL_HTTP:-false}
       INSTALL_JWT: ${INSTALL_JWT:-false}
