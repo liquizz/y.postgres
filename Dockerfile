@@ -1,4 +1,4 @@
-FROM postgres:15
+FROM postgres:17
 
 ARG INSTALL_PLRUST=false
 ARG INSTALL_CRON=false
@@ -85,17 +85,21 @@ RUN if [ "$INSTALL_PLRUST" != "true" ]; then \
   fi
 
 # Copy initialization scripts
-ADD ./src /docker-entrypoint-initdb.d
-RUN chmod 755 /docker-entrypoint-initdb.d
-RUN chmod 644 /docker-entrypoint-initdb.d/*.sql
+# ADD ./src /docker-entrypoint-initdb.d
+# RUN chmod 755 /docker-entrypoint-initdb.d
+# RUN chmod 644 /docker-entrypoint-initdb.d/*.sql
 
 ADD ./postgresql.conf /etc/postgresql/postgresql.conf
 RUN chown 999:999 /etc/postgresql/postgresql.conf && \
     chmod 644 /etc/postgresql/postgresql.conf
 
-ADD ./plugin/plrust/allowed-dependencies.toml /etc/postgresql/allowed-dependencies.toml
-RUN chown 999:999 /etc/postgresql/allowed-dependencies.toml && \
-    chmod 644 /etc/postgresql/allowed-dependencies.toml
+# ADD ./pg_hba.conf /etc/postgresql/pg_hba.conf
+# RUN chown 999:999 /etc/postgresql/pg_hba.conf && \
+#     chmod 644 /etc/postgresql/pg_hba.conf
+
+# ADD ./plugin/plrust/allowed-dependencies.toml /etc/postgresql/allowed-dependencies.toml
+# RUN chown 999:999 /etc/postgresql/allowed-dependencies.toml && \
+#     chmod 644 /etc/postgresql/allowed-dependencies.toml
 
 RUN if [ "$INSTALL_PLRUST" = "true" ]; then \
     mkdir -p /var/lib/postgresql/plrust && \

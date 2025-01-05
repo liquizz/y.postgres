@@ -1,12 +1,12 @@
-version: '3.1'
-name: postgresql
+version: '3.3'
 
 services:
   postgresql:
+    container_name: postgresql
     build:
       context: .
       dockerfile: Dockerfile
-    restart: always # maybe you need unless-stop
+    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-strongpassword}
       ### Extensions ###
@@ -21,16 +21,12 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
       - pg_logs:/var/log/postgresql
-      - rust_target:${PLRUST_WORK_DIR:-/var/lib/postgresql/plrust}
     logging:
       driver: "json-file"
       options:
         max-size: "20m"
         max-file: "10"
-    privileged: true
 
 volumes:
   pg_data: {}
   pg_logs: {}
-  # this is unneccessary if you do not enable INSTALL_PLRUST
-  rust_target: {}
